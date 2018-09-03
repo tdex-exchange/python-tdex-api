@@ -5,7 +5,7 @@ This project is designed to help you make your own projects
 
 #### Installation
 ```
-npm install tdexApi
+pip install tdexApi
 ```
 
 #### Getting started
