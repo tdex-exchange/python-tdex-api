@@ -6,7 +6,7 @@ This project is designed to help you make your own projects
 #### Installation
 ```
 pip install tdexApi
-pip install -r requirements.txt
+pip install requests
 ```
 
 #### Getting started
