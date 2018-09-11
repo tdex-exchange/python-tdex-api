@@ -113,6 +113,10 @@ tp	Object	止盈 singular 选填
 	-distance bool 价距|报价 市价单只用用价距
 
 	-param	float64 值
+	
+止损事例：{"Price":0,"Strategy":0,"Side":0,"SL":{"Distance":true,"Param":-100},"CID":1,"Scale":1,"Volume":1,"Visible":-1}
+	
+止盈事例：{"Price":0,"Strategy":0,"Side":0,"TP":{"Distance":true,"Param":100},"CID":1,"Scale":1,"Volume":1,"Visible":-1}
 ```
 
 #### 批量平仓
@@ -159,58 +163,75 @@ params:
 	list	uint64[]	产品列表 [CID(1),...] 必填
 ```
 
-#### 设置止损/止盈
+#### 设置止损
 ```
-res = tdex.futuresOpen({cid: int64, id: uint64,...})
+res = tdex.futuresSetSl({cid: int64, id: uint64,...})
 ```
 ```
 parmas:
 
-	cid	int64 产品 必填
+	Cid	int64	产品
 
-	side	uint32	交易方向。0 - buy 1 - sell。参考 必填
+	ID	uint64	仓位
 	
-	scale	float64 杠杆 必填
+	Distance	bool	是否为相对价格
 	
-	volume	uint32	数量 必填
+	Price	float64	限价 <=0: 市价
 	
-	distance	bool 触发时使用价距或价格 选填
+	Timely	uint32	时效性(限价单用) singular。参考
 	
-	price	float64 限价 <=0:市价 singular 选填
+	TimelyParam	int32	时效性参数
 	
-	timely	uint32	时效性(限价单用) singular。参考 选填
+	Strategy	uint32	策略。参考
 	
-	timelyParam	int32	时效性参数 选填
+	Variable	uint32	策略使用的变量(条件订单用) singular。参考
 	
-	passive	bool 被动性 选填
+	Constant	float64 策略中常量(条件订单用) singular
 	
-	visible	int32 显示数量 <0:全部可见 >=0隐藏 选填
+	Passive	bool	被动性
 	
-	strategy	uint32	策略。参考 选填
+	Visible	int32	显示数量 <0:全部可见 >=0隐藏
 	
-	better	bool 以买一卖一价进入订单簿 选填
-	
-	variable	uint32	策略使用的变量(条件订单用) singular。参考 选填
-	
-	constant	float64 策略中常量(条件订单用) singular 选填
-	
-	sl	Object	止损 singular 选填
-	 
-		-distance	bool 价距|报价 市价单只用用价距
-	
-		-param float64 值
-	
-	tp	Object	止盈 singular 选填
-	
-		-distance bool 价距|报价 市价单只用用价距
-	
-		-param	float64 值
+	Better	bool	以买一卖一价进入订单簿
 		
-	止损事例：{"Price":0,"Strategy":0,"Side":0,"SL":{"Distance":true,"Param":-100},"CID":1,"Scale":1,"Volume":1,"Visible":-1}
-	
-	止盈事例：{"Price":0,"Strategy":0,"Side":0,"TP":{"Distance":true,"Param":100},"CID":1,"Scale":1,"Volume":1,"Visible":-1}
 
 ```
+#### 设置止盈
+```
+res = tdex.futuresSetTp({cid: int64, ...}, res => {
+	//成功回调
+})
+```
+```	
+parmas:
+
+	Cid	 int64	产品
+
+	ID	uint64	仓位
+	
+	Distance	bool	是否为相对价格
+	
+	Price	float64	限价 <=0: 市价
+	
+	Timely	uint32	时效性(限价单用) singular。参考
+	
+	TimelyParam	int32	时效性参数
+	
+	Strategy	uint32	策略。参考
+	
+	Variable	uint32	策略使用的变量(条件订单用) singular。参考
+	
+	Constant	float64 策略中常量(条件订单用) singular
+	
+	Passive		bool	被动性
+	
+	Visible		int32	显示数量 <0:全部可见 >=0隐藏
+	
+	Better		bool	以买一卖一价进入订单簿
+	
+```
+
+
 #### 合仓
 ```
 res = tdex.futuresMerge({cid: int64, list: []})
