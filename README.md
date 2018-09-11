@@ -322,19 +322,6 @@ params:
 
 ```
 
-#### 现货买卖统计
-```
-res = tdex.spotStat({beginTime: string, endTime: string, symbol: string})
-```
-```
-params:
-
-	symbol	string	产品 必填
-
-	beginTime	int64	开始时间戳。秒 必填
-
-	endTime	int64	结束时间戳。秒 必填
-```
 
 
 
