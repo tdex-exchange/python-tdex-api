@@ -53,7 +53,20 @@ params:
 	address	string	提现地址 必填
 	amount	float64 数量 必填
 ```
-
+#### 资金划转
+```
+tdex.mSwitch({currency:1, ...}, res => {
+	//成功回调
+})
+```
+```
+params:
+	currency	uint32	币种 必填
+	
+	direction	uint32	方向。1 - 现货转期货 2 - 期货转现货 必填
+	
+	amount	float64	数量 必填
+```
 #### 期货开仓
 ```
 res = tdex.futuresOpen({cid:1, side: 0, scale: 10, volume: 1})
@@ -146,67 +159,57 @@ params:
 	list	uint64[]	产品列表 [CID(1),...] 必填
 ```
 
-#### 设置止损
+#### 设置止损/止盈
 ```
-res = tdex.setsl({cid: int64, id: uint64,...})
+res = tdex.futuresOpen({cid: int64, id: uint64,...})
 ```
 ```
 parmas:
 
-	cid	int64	产品 必填
+	cid	int64 产品 必填
 
-	id	uint64	仓位 必填
+	side	uint32	交易方向。0 - buy 1 - sell。参考 必填
 	
-	distance	bool	是否为相对价格 必填
+	scale	float64 杠杆 必填
 	
-	price	float64	限价 <=0: 市价 必填
+	volume	uint32	数量 必填
+	
+	distance	bool 触发时使用价距或价格 选填
+	
+	price	float64 限价 <=0:市价 singular 选填
 	
 	timely	uint32	时效性(限价单用) singular。参考 选填
 	
 	timelyParam	int32	时效性参数 选填
 	
-	strategy	uint32	策略。参考 选填
+	passive	bool 被动性 选填
 	
-	variable	uint32	策略使用的变量(条件订单用) singular。参考 选填
-	
-	constant	float64 策略中常量(条件订单用) singular 选填
-	
-	passive	bool	被动性 选填
-	
-	visible	int32	显示数量 <0:全部可见 >=0隐藏 选填
-	
-	better	bool	以买一卖一价进入订单簿 选填
-```
-#### 设置止盈
-```
-res = tdex.settp({cid: int64, id: uint64,...})
-```
-```
-params:
-
-	cid	int64	产品 必填
-
-	id	uint64	仓位 必填
-	
-	distance	bool	是否为相对价格 必填
-	
-	price	float64	限价 <=0: 市价 必填
-	
-	timely	uint32	时效性(限价单用) singular。参考 选填
-	
-	timelyParam	int32	时效性参数 选填
+	visible	int32 显示数量 <0:全部可见 >=0隐藏 选填
 	
 	strategy	uint32	策略。参考 选填
-	
-	variable	uint32	策略使用的变量(条件订单用) singular。参考 选填
-	
-	constant	float64 策略中常量(条件订单用) singular 选填
-	
-	passive	bool	被动性 选填
-	
-	visible	int32	显示数量 <0:全部可见 >=0隐藏 选填
 	
 	better	bool 以买一卖一价进入订单簿 选填
+	
+	variable	uint32	策略使用的变量(条件订单用) singular。参考 选填
+	
+	constant	float64 策略中常量(条件订单用) singular 选填
+	
+	sl	Object	止损 singular 选填
+	 
+		-distance	bool 价距|报价 市价单只用用价距
+	
+		-param float64 值
+	
+	tp	Object	止盈 singular 选填
+	
+		-distance bool 价距|报价 市价单只用用价距
+	
+		-param	float64 值
+		
+	止损事例：{"Price":0,"Strategy":0,"Side":0,"SL":{"Distance":true,"Param":-100},"CID":1,"Scale":1,"Volume":1,"Visible":-1}
+	
+	止盈事例：{"Price":0,"Strategy":0,"Side":0,"TP":{"Distance":true,"Param":100},"CID":1,"Scale":1,"Volume":1,"Visible":-1}
+
 ```
 #### 合仓
 ```
