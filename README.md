@@ -29,13 +29,13 @@ res = tdex.userInfo()
 ```
 ##### 查询有所余额
 ```
-res = tdex.balances()
+res = tdex.walletBalances()
 ``` 
 
 #### 查询单个余额
 
 ```
-res = tdex.balance({currency:1})
+res = tdex.walletBalance({currency:1})
 ```
 ```
 params:
@@ -45,7 +45,7 @@ params:
 #### 提现
 
 ```
-res = tdex.withdraw({currency:1, address: 'string', amount: float64})
+res = tdex.walletWithDraw({currency:1, address: 'string', amount: float64})
 ```
 ```
 params:
@@ -55,7 +55,7 @@ params:
 ```
 #### 资金划转
 ```
-tdex.mSwitch({currency:1, ...}, res => {
+tdex.walletSwitch({currency:1, ...}, res => {
 	//成功回调
 })
 ```
@@ -213,7 +213,7 @@ parmas:
 ```
 #### 合仓
 ```
-res = tdex.merge({cid: int64, list: []})
+res = tdex.futuresMerge({cid: int64, list: []})
 ```
 ```
 params:
@@ -224,7 +224,7 @@ params:
 ```
 #### 分仓
 ```
-res = tdex.split({cid: int64, id: uint64, volume: uint64})
+res = tdex.futuresSplit({cid: int64, id: uint64, volume: uint64})
 ```
 ```
 params:
@@ -238,7 +238,7 @@ params:
 
 #### 获取\设置 用户选项
 ```
-res = tdex.scheme({cid: int64}, type)
+res = tdex.futuresScheme({cid: int64}, type)
 ```
 ```
 params:
@@ -251,16 +251,16 @@ params:
 ```
 #### 获取订单
 ```
-res = tdex.getOrders()
+res = tdex.futuresGetOrders()
 ```
 
 #### 获取持仓
 ```
-res = tdex.getPosition()
+res = tdex.futuresGetPosition()
 ```
 #### 获取历史信息
 ```
-res = tdex.getHistory({pageSize: int32, page: int32})
+res = tdex.futuresGetHistory({pageSize: int32, page: int32})
 ```
 ```
 params:
@@ -271,7 +271,7 @@ params:
 
 #### 获取合约信息
 ```
-res = tdex.getContract({symbol: string})
+res = tdex.futuresGetContract({symbol: string})
 ```
 ```
 params:
@@ -307,7 +307,7 @@ params:
 ```
 #### 现货订单历史
 ```
-res = tdex.spotHistory({beginTime: string, endTime: string, pageSize: int32, page: int32})
+res = tdex.spotGetHistory({beginTime: string, endTime: string, pageSize: int32, page: int32})
 ```
 ```
 params:
