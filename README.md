@@ -7,7 +7,9 @@ This project is designed to help you make your own projects
 ```
 pip install tdexApi
 pip install requests
+pip install websocket
 ```
+## Rest
 
 #### Getting started
 
@@ -342,7 +344,80 @@ params:
 	page 可选	int32	当前页码 选填
 
 ```
+#### 查询token
+```
+res = tdex.getToken({})
+```
 
+#### 查询市场深度
+```
+res = tdex.futureLastOrder({"depth": 10})
+```
+```
+params:
+
+	depth int32 深度数量 必填
+
+```
+
+## Websocket
+```
+import websocket
+import json
+try:
+    import thread
+except ImportError:
+    import _thread as thread
+
+def on_message(ws, message):
+    print(message)
+
+def on_error(ws, error):
+    print(error)
+
+def on_close(ws):
+    print("### closed ###")
+
+def on_open(ws):
+    def run(*args):
+        #订阅深度
+        depthData = {
+		    "id": "1524707635007",
+		    "sub": "BTCUSD_DEPTH_DATA",
+		}
+		ws.send(json.dumps(depthData))
+		
+		#订阅行情
+		marketData = {
+		    "id": "1524724272995",
+		    "sub": "BTCUSD_MARKET_TICKER"
+		}
+		ws.send(json.dumps(marketData))
+		
+		#订阅用户数据
+		resInfo = tdex.userInfo() #调用tdex-sdk包接口
+		resToken = tdex.getToken() #调用tdex-sdk包接口
+		userData = {
+		    "uid": resInfo['data']['uid'],
+		    "time": resToken['data']['time'],
+		    "token": resToken['data']['token'],
+		    "id": "1524707635023",
+		    "sub": "ACCOUNT_INFO_UPDATE"
+		}
+		ws.send(json.dumps(userData))
+		
+    thread.start_new_thread(run, ())
+
+
+if __name__ == "__main__":
+    websocket.enableTrace(True)
+    ws = websocket.WebSocketApp("wss://tl.tdex.com/realtime",
+                              on_message = on_message,
+                              on_error = on_error,
+                              on_close = on_close)
+    ws.on_open = on_open
+    ws.run_forever()
+```
 
 
 
