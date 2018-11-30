@@ -364,13 +364,32 @@ params:
 ```
 import websocket
 import json
+import gzip, binascii, os
+from cStringIO import StringIO
+
 try:
     import thread
 except ImportError:
     import _thread as thread
 
-def on_message(ws, message):
-    print(message)
+# 解压数据
+def gzip_uncompress(c_data):
+    buf = StringIO(c_data)
+    f = gzip.GzipFile(mode='rb', fileobj=buf)
+    try:
+        r_data = f.read()
+    finally:
+        f.close()
+    return r_data
+
+def on_message(ws, argument_obj, argument_message, type):
+    if argument_message == 1:
+        data = json.loads(argument_obj)
+    else:
+        r_data = gzip_uncompress(argument_obj)
+        data = json.loads(r_data)
+
+    print(data)
 
 def on_error(ws, error):
     print(error)
