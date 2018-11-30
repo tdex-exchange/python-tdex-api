@@ -385,26 +385,26 @@ def on_open(ws):
 		    "id": "1524707635007",
 		    "sub": "BTCUSD_DEPTH_DATA",
 		}
-		ws.send(json.dumps(depthData))
+	ws.send(json.dumps(depthData))
+
+	#订阅行情
+	marketData = {
+	    "id": "1524724272995",
+	    "sub": "BTCUSD_MARKET_TICKER"
+	}
+	ws.send(json.dumps(marketData))
 		
-		#订阅行情
-		marketData = {
-		    "id": "1524724272995",
-		    "sub": "BTCUSD_MARKET_TICKER"
-		}
-		ws.send(json.dumps(marketData))
-		
-		#订阅用户数据
-		resInfo = tdex.userInfo() #调用tdex-sdk包接口
-		resToken = tdex.getToken() #调用tdex-sdk包接口
-		userData = {
-		    "uid": resInfo['data']['uid'],
-		    "time": resToken['data']['time'],
-		    "token": resToken['data']['token'],
-		    "id": "1524707635023",
-		    "sub": "ACCOUNT_INFO_UPDATE"
-		}
-		ws.send(json.dumps(userData))
+	#订阅用户数据
+	resInfo = tdex.userInfo() #调用tdex-sdk包接口
+	resToken = tdex.getToken() #调用tdex-sdk包接口
+	userData = {
+	    "uid": resInfo['data']['uid'],
+	    "time": resToken['data']['time'],
+	    "token": resToken['data']['token'],
+	    "id": "1524707635023",
+	    "sub": "ACCOUNT_INFO_UPDATE"
+	}
+	ws.send(json.dumps(userData))
 		
     thread.start_new_thread(run, ())
 
