@@ -7,7 +7,7 @@ import hmac
 
 class Configs(object):
     def __init__(self):
-        self.url = 'https://tl.tdex.com/openapi/v1'
+        self.url = 'https://www.tdex.com/openapi/v1'
         self.headers = {
             'Content-Type': 'application/json',
         }
